@@ -149,7 +149,7 @@ function getBook(id) {
 
 //Destructuring begins
 const books = getBooks();
-const book = books[0];
+const book = books[2];
 
 // without object Destructuring
 // const title = book.title;
@@ -193,3 +193,116 @@ console.log(summary);
 //ternary operator
 const pagesRange = pages > 1000 ? "more than 1000" : "less than 1000";
 pagesRange;
+
+// short circuiting - &&
+console.log(true && "some value");
+console.log(false && "some value");
+
+// short circuiting - &&
+console.log(true && "some value");
+console.log(false && "some value");
+console.log(hasMovieAdaptation && "This movie has movie adaption");
+console.log(0 && "some value");
+console.log("some string" && "some value");
+
+// short circuiting - ||
+console.log(true || "some value");
+console.log(false || "some value");
+console.log(hasMovieAdaptation || "This movie has movie adaption");
+console.log(0 || "some value");
+console.log("some string" || "some value");
+
+// short circuiting - set default values
+console.log(book.translations.spanish);
+const spanishTranslations = book.translations.spanish || "NOT TRANSLATED";
+spanishTranslations;
+
+// short circuiting - edge case
+console.log(book.reviews.librarything?.reviewsCount || 0);
+
+// here value should have been 0, but since 0 is a falsy value, it is short- circuited and NO DATA is retured
+// this is wrong
+const wrongCount = book.reviews.librarything?.reviewsCount || "NO DATA";
+wrongCount;
+
+// null coalescing
+const count = book.reviews.librarything?.reviewsCount ?? "NO DATA";
+count;
+
+function getTotalReviewsCount(bookToCheck) {
+  const goodReadReviews = bookToCheck.reviews?.goodreads?.reviewsCount ?? 0;
+  const librarythingReviews =
+    bookToCheck.reviews?.librarything?.reviewsCount ?? 0;
+  return goodReadReviews + librarythingReviews;
+}
+
+const totalReviews = getTotalReviewsCount(book);
+console.log(totalReviews);
+
+const titles = books.map((y) => y.title);
+titles;
+
+const essentialData = books.map((x) => ({
+  title: x.title,
+  author: x.author,
+  reviewsCount: getTotalReviewsCount(x),
+}));
+
+essentialData;
+
+const longbooks = books
+  .filter((z) => z.pages > 500)
+  .filter((a) => a.hasMovieAdaptation);
+longbooks;
+console.log(longbooks);
+
+const adventureBooks = books
+  .filter((w) => w.genres.includes("adventure"))
+  .map((r) => r.title);
+adventureBooks;
+
+const pagesAllBook = books.reduce((sum, g) => sum + g.pages, 0);
+pagesAllBook;
+
+const arr = [3, 7, 2, 9, 1];
+const sorted = arr.slice().sort((a, b) => a - b);
+const reversSorted = arr.slice().sort((a, b) => b - a);
+sorted;
+reversSorted;
+
+const sortedByPages = books.slice().sort((a, b) => b.pages - a.pages);
+sortedByPages;
+
+// add an element to the array
+const newBook = {
+  id: 6,
+  title: "Harry potter and the chamber of secrets",
+  author: "J.K.Rowling",
+};
+const booksAfterAdd = [...books, newBook];
+booksAfterAdd;
+
+//delete an element from the array
+const booksAfterDelete = booksAfterAdd.filter((book) => book.id != 3);
+booksAfterDelete;
+
+//update an element
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id == 1 ? { ...book, pages: 1 } : book,
+);
+booksAfterUpdate;
+
+fetch("https://jsonplaceholder.typicode.com/todos")
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+
+async function getTodos() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+  const data = await res?.json();
+  console.log(data);
+  return data;
+}
+
+const todos = getTodos();
+console.log(todos);
+console.log("venkatesh");
